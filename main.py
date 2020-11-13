@@ -21,13 +21,25 @@ class Company:
         self.get_company()  # ввод участников
 
     def get_company(self):  # Создаем группу участников и вносим предварительные их затраты
-        self.num = int(input('Введите сколько человек в компании: '))
+        try:
+            self.num = int(input('Введите сколько человек в компании: '))
+        except ValueError:
+            print('Необходимо ввести целое число! Попробуйте еще раз.')
+            self.get_company()
         for i in range(self.num):
             men = Men()
             print(f'{i + 1} участник:')
             men.name = input('Имя: ')
-            men.sum = int(input('Предварительно внес сумму: '))
-            self.list.append(men)
+            work = True
+            while work:
+                try:
+                    number = input('Предварительно внес сумму: ')
+                    number = number.replace(',', '.')  # Если введено число через запятую, заменим его на число с точкой
+                    men.sum = float(number)
+                    self.list.append(men)
+                    work = False
+                except ValueError:
+                    print('Значение должно быть числом! Попробуйте еще раз.')
         self.sum()
         return self.list
 
